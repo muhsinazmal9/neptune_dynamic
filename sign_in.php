@@ -1,5 +1,4 @@
-
-
+<?php session_start();?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +29,6 @@
 
     <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/neptune.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="./assets/images/neptune.png" />
-    
 </head>
 <body>
     <div class="app app-auth-sign-in align-content-stretch d-flex flex-wrap justify-content-end">
@@ -39,21 +37,44 @@
         </div>
         <div class="app-auth-container">
             <div class="logo">
-                <a href="index.html">Neptune</a>
+                <a href="#">Neptune</a>
             </div>
             <p class="auth-description">Please sign-in to your account and continue to the dashboard.<br>Don't have an account? <a href="sign_up.php">Sign Up</a></p>
 
-            <div class="auth-credentials m-b-xxl">
-                <label for="signInEmail" class="form-label">Email address</label>
-                <input type="email" class="form-control m-b-md" id="signInEmail" aria-describedby="signInEmail" placeholder="example@neptune.com">
+            <?php if(isset($_SESSION['sign_in_success_msg'])): ?>
+                <div class="alert alert-primary">
+                    <?php 
+                        echo $_SESSION['sign_in_success_msg'];
+                    ?>
+                </div>
+            <?php endif; ?>
 
-                <label for="signInPassword" class="form-label">Password</label>
-                <input type="password" class="form-control" id="signInPassword" aria-describedby="signInPassword" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
-            </div>
+            <form action="sign_in_post.php" method="post">
+                <div class="auth-credentials m-b-xxl">
+                    <label class="form-label">Email address</label>
+                    <input type="email" class="form-control m-b-md" placeholder="example@neptune.com" name="email" value="
+                    <?php
+                        if (isset($_SESSION['old_email'])) {
+                            echo $_SESSION['old_email'];
+                        }
+                    ?>">
 
-            <div class="auth-submit">
-                <a href="#" class="btn btn-primary">Sign In</a>
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" name="password">
+                </div>
+                <div class="auth-submit">
+                    <button type="submit" class="btn btn-primary">Sign In</button>
+                </div>
+            </form>
+            
+            <?php if(isset($_SESSION['login_info_error'])):?>
+            <div class="alert alert-danger mt-5 ">
+                <?php 
+                    echo $_SESSION['login_info_error'];
+                ?>
             </div>
+            <?php endif;?>
+
             <div class="divider"></div>            
         </div>
     </div>
@@ -67,3 +88,4 @@
     <script src="./assets/js/custom.js"></script>
 </body>
 </html>
+<?php session_unset();?>

@@ -62,6 +62,9 @@ if ($password != $confirm_password) {
         $insert_query = "INSERT INTO users(name,email,password) VALUES('$name','$email','$encrypted_pass')"; // double string required. (inside single string)
         mysqli_query($db_connect , $insert_query);
 
+        // success message
+        $_SESSION['sign_in_success_msg'] = "$name! Your account created successfully.";
+
         header('location:sign_in.php');
     }
 }
