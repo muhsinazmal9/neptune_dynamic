@@ -16,6 +16,7 @@ if ($name) {
     $flag = true;
 } else {
     $_SESSION['name_error'] = "Please give a name.";
+    header('location:sign_up.php');
 }
 
 
@@ -24,6 +25,7 @@ if ($email) {
     $flag = true;
 } else {
     $_SESSION['email_error'] = "Please give a valid e-mail.";
+    header('location:sign_up.php');
 }
 
 
@@ -32,6 +34,7 @@ if ($password) {
     $flag = true;
 } else {
     $_SESSION['password_error'] = 'Please Give a Password';
+    header('location:sign_up.php');
 }
 
 
@@ -40,21 +43,26 @@ if ($confirm_password) {
     $flag = true;
 } else {
     $_SESSION['confirm_password_error'] = 'Please Give a Confirm Password';
+    header('location:sign_up.php');
 }
 
 
 if ($password != $confirm_password) {
     $flag = true;
     $_SESSION['password_match_error'] = "Password doesn't match!";
+    header('location:sign_up.php');
 } else {
     if ($pregma != 1) {
+        $flag = true;
         $_SESSION['password_match_error'] = "Please give a strong password (including capital letter, small letter, number, special character and minimum 8 character)";
-        header('location: sign_up.php');
+        header('location:sign_up.php');
     } else {
-        echo 'code...';
+        $encrypted_pass = md5($password);
+        $db_connect = mysqli_connect('localhost','root','','neptune_info');
+        $insert_query = "INSERT INTO users(name,email,password) VALUES('$name','$email','$encrypted_pass')"; // double string required. (inside single string)
+        mysqli_query($db_connect , $insert_query);
+
+        header('location:sign_in.php');
     }
 }
-
-    
-
-?>
+    ?>
